@@ -1,0 +1,40 @@
+
+
+
+{% block body %}
+     {% from "includes/_formhelpers.html" import render_field %}
+<form method="POST" action="">
+    <input type="submit" class="btn btn-info" name="Setup" value="Create Policy">
+    <input type="submit" name="Link" value="Link Policy">
+    <br>
+<br>
+
+Enter the IP address you want to work with to use the tool.
+<br>
+<br>
+         <div class="form-group">
+             {{render_field(form.Host, class="form-control")}}
+         </div>
+    <input type="submit" name="Block" value="Block IP">
+    <input type="submit" name="UnBlock" value="UnBlock IP">
+<br>
+<br>
+Clean up before you leave for the next person.
+<br><br>
+    <input type="submit" name="UnLink" value="UnLink Policy">
+    <input type="submit" name="Delete" value="Delete Policy">
+</form>
+
+{% endblock %}
+
+
+{% block title %}
+This tool in quite simple and just uses the API to drive changes in PSM.
+<br>
+It is designed just to show the power of automation in CM onwards.
+<br>
+Enable ping to run from a host and have the windows on show during the demo.
+<br>
+Use the tool to drive the creation of the policy, linking it to the VRF, and then the addition of IP Addresses to be block and unblocked.
+<br><br><br>
+{% endblock %}
