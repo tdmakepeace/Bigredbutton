@@ -26,6 +26,7 @@ def favicon():
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+    login()
     form = HostIP(request.form)
     Host = form.Host.data
     if request.method == 'POST' :
