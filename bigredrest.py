@@ -7,13 +7,14 @@ from flask_restful import Resource, Api
 from wtforms import Form, StringField, validators
 from urllib.parse import unquote
 
+import var
 
-webhost='0.0.0.0'
-webport=9999
-IsolatePolicy = 'Isolated_Hosts'
-AdminNet = '192.168.102.0/24'
-VRFToDemo = "default"
-demotime = 10
+#var.webhost='0.0.0.0'
+#var.webport=9999
+#var.IsolatePolicy = 'Isolated_Hosts'
+#var.AdminNet = '192.168.102.0/24'
+#var.VRFToDemo = "default"
+#var.demotime = 10
 
 app = Flask(__name__, static_url_path='/static')
 api = Api(app)
@@ -32,64 +33,64 @@ def index():
     if request.method == 'POST' :
         if "Setup" in request.form:
             login()
-            if RetrievePolicy(IsolatePolicy) != 1:
-                CreatePolicy(IsolatePolicy, AdminNet)
+            if RetrievePolicy(var.IsolatePolicy) != 1:
+                CreatePolicy(var.IsolatePolicy, var.AdminNet)
                 return render_template('home.html',  form=form)
                 pass
             else:
-                UpdatePolicy(IsolatePolicy, AdminNet)
+                UpdatePolicy(var.IsolatePolicy, var.AdminNet)
                 return render_template('home.html',  form=form)
                 pass
         elif "Link" in request.form:
-            if RetrievePolicy(IsolatePolicy) != 1:
-                CreatePolicy(IsolatePolicy, AdminNet)
-                LinkPolicyVRF(VRFToDemo, IsolatePolicy)
+            if RetrievePolicy(var.IsolatePolicy) != 1:
+                CreatePolicy(var.IsolatePolicy, var.AdminNet)
+                LinkPolicyVRF(var.VRFToDemo, var.IsolatePolicy)
                 return render_template('home.html', form=form)
                 pass
             else:
-                LinkPolicyVRF(VRFToDemo, IsolatePolicy)
+                LinkPolicyVRF(var.VRFToDemo, var.IsolatePolicy)
                 return render_template('home.html', form=form)
                 pass
 
         elif "Block" in request.form and form.validate():
-            if RetrievePolicy(IsolatePolicy) != 1:
-                CreatePolicy(IsolatePolicy, AdminNet)
-                LinkPolicyVRF(VRFToDemo, IsolatePolicy)
-                AddToBlockPolicy(IsolatePolicy, Host)
+            if RetrievePolicy(var.IsolatePolicy) != 1:
+                CreatePolicy(var.IsolatePolicy, var.AdminNet)
+                LinkPolicyVRF(var.VRFToDemo, var.IsolatePolicy)
+                AddToBlockPolicy(var.IsolatePolicy, Host)
                 return render_template('home.html', form=form)
                 pass
             else:
-                AddToBlockPolicy(IsolatePolicy, Host)
+                AddToBlockPolicy(var.IsolatePolicy, Host)
                 return render_template('home.html', form=form)
                 pass
 
 
         elif "UnBlock" in request.form and form.validate():
-            if RetrievePolicy(IsolatePolicy) != 1:
+            if RetrievePolicy(var.IsolatePolicy) != 1:
                 return render_template('home.html', form=form)
                 pass
             else:
-                DeleteFromBlockPolicy(IsolatePolicy, Host)
+                DeleteFromBlockPolicy(var.IsolatePolicy, Host)
                 return render_template('home.html', form=form)
                 pass
 
 
         elif "UnLink" in request.form:
-            if RetrievePolicy(IsolatePolicy) != 1:
+            if RetrievePolicy(var.IsolatePolicy) != 1:
                 return render_template('home.html', form=form)
                 pass
             else:
-                UnLinkPolicyVRF(VRFToDemo)
+                UnLinkPolicyVRF(var.VRFToDemo)
                 return render_template('home.html', form=form)
                 pass
 
         elif "Delete" in request.form:
-            if RetrievePolicy(IsolatePolicy) != 1:
+            if RetrievePolicy(var.IsolatePolicy) != 1:
                 return render_template('home.html', form=form)
                 pass
             else:
-                UnLinkPolicyVRF(VRFToDemo)
-                DeletePolicy(IsolatePolicy)
+                UnLinkPolicyVRF(var.VRFToDemo)
+                DeletePolicy(var.IsolatePolicy)
                 return render_template('home.html', form=form)
                 pass
         else:
@@ -169,4 +170,4 @@ class HostIP(Form):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host=webhost, port=webport)
+    app.run(debug=True, host=var.webhost, port=var.webport)
