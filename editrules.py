@@ -58,11 +58,11 @@ def AddToBlockPolicy(PolicyName,updateIP):
                 if (each["name"]) !=  "Default_Allow_Net":
                     lst.append(each)
                 # print(each)
-
-            lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'deny', 'from-ip-addresses': [updateIP], 'to-ip-addresses': ['any'], 'description': 'Block_Outbound_Traffic', 'name': blocknameout } )
-            lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'deny', 'from-ip-addresses': ['any'], 'to-ip-addresses': [updateIP], 'description': 'Block_Inbound_Traffic', 'name': blocknamein } )
-            # Adds the detault rule back on the end.
-            lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'permit', 'from-ip-addresses': ['any'], 'to-ip-addresses': ['any'], 'description': 'Default_Allow_On_VRF', 'name': 'Default_Allow_Net'})
+                elif (each["name"]) ==  "Default_Allow_Net":
+                    lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'deny', 'from-ip-addresses': [updateIP], 'to-ip-addresses': ['any'], 'description': 'Block_Outbound_Traffic', 'name': blocknameout } )
+                    lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'deny', 'from-ip-addresses': ['any'], 'to-ip-addresses': [updateIP], 'description': 'Block_Inbound_Traffic', 'name': blocknamein } )
+                    # Adds the detault rule back on the end.
+                    lst.append(each)
             json.dump(lst, f)
 
         f = open(postfilename, "a")
@@ -164,7 +164,7 @@ def DeleteFromBlockPolicy(PolicyName,updateIP):
         ipint = str(struct.unpack('>I',  socket.inet_aton(updateIP))[0])
         blocknameout=(ipint+"_Block_Outbound")
         blocknamein=(ipint+"_Block_Inbound")
-        deletelist = [blocknamein, blocknameout, "Default_Allow_Net"]
+        deletelist = [blocknamein, blocknameout]
 
         lst = []
         with open(postfilename, mode='a') as f:
@@ -177,7 +177,7 @@ def DeleteFromBlockPolicy(PolicyName,updateIP):
                     lst.append(each)
                     # print(each)
 
-            lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'permit', 'from-ip-addresses': ['any'], 'to-ip-addresses': ['any'], 'description': 'Default_Allow_On_VRF', 'name': 'Default_Allow_Net'})
+            #lst.append({'proto-ports': [{'protocol': 'any', 'ports': ''}], 'action': 'permit', 'from-ip-addresses': ['any'], 'to-ip-addresses': ['any'], 'description': 'Default_Allow_On_VRF', 'name': 'Default_Allow_Net'})
             json.dump(lst, f)
 
         f = open(postfilename, "a")
